@@ -4,6 +4,9 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude
 
 SRC = $(wildcard src/*.c)
+
+# Object files generated from source files, stored in the build directory
+# Target executable: build/myapp
 OBJ = $(SRC:src/%.c=build/%.o)
 TARGET = build/myapp
 
