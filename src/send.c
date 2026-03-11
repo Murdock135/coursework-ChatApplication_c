@@ -7,33 +7,21 @@
 
 #include <netdb.h>
 
-#define MYPORT "3490"
-#define BACKLOG 10
-#define NAMELENGTH 50
+#include "chat_config.h"
 
 int main(void) {
-    // array for holding names of logged in users
-    char logged_in[BACKLOG][NAMELENGTH];
-
-    // Struct holding information of incoming connection
-    struct sockaddr_storage their_addr;
-    socklen_t addr_size;
-
-    // Helper structs for creating socket
     struct addrinfo hints;
-    struct addrinfo * res; // will point to the results of getaddrinfo()
-
-    int status; // return of getaddrinfo()
-    int sockfd; // return of socket()
-    int new_sockfd; // return of accept()
-    char * address = NULL; // their address
+    struct addrinfo * res; // will point to the results
+    char * port = "3490";
+    char * address = NULL;
 
     memset(&hints, 0, sizeof hints); // fill hints with 0's
     hints.ai_family = AF_UNSPEC;
     hints.ai_flags = AI_PASSIVE; // fill in my IP for me
     hints.ai_socktype = SOCK_STREAM; // TCP stream socket
 
-    if ((status = getaddrinfo(address, MYPORT, &hints, &res)) != 0) {
+    int status;
+    if ((status = getaddrinfo(address, port, &hints, &res)) != 0) {
         fprintf(stderr, "gai_error: %s\n", gai_strerror(status));
         exit(1);
     }
@@ -42,6 +30,7 @@ int main(void) {
     // ------------
     // socket(int domain, int type, int protocol)
     // int socket returns a socket descriptor
+    int sockfd;
     sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
     printf("socket descriptor: %d\n", sockfd);
 
@@ -51,16 +40,13 @@ int main(void) {
     // int bind(int sockfd, struct sockaddr *myaddr, int addrlen)
     bind(sockfd, res->ai_addr, res->ai_addrlen);
 
-    // listen
-    // -------------
-    listen(sockfd, BACKLOG);
-
-    // accept
-    // --------------
-    addr_size = sizeof their_addr;
-    accept(new_sockfd, (struct sockaddr *)&their_addr, &addr_size);
+    // connect socket to (address, port) kept in res->ai_addr
+    int connection_status = connect(sockfd, res->ai_addr, res->ai_addrlen);
+    printf("Connection status: %d\n", connection_status);
     
     freeaddrinfo(res);
 
     return 0;
+}
+turn 0;
 }
