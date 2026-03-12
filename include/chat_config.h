@@ -1,0 +1,5 @@
+#define MYPORT "3490"
+#define BACKLOG 10
+#define NAMELENGTH 50
+#define BUFFERSIZE 256
+#define MAXUSERS 5

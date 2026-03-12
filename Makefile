@@ -1,17 +1,28 @@
-# Example Makefile structure for a C project:
+# Makefile for Chat Application
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude
 
-SRC = $(wildcard src/*.c)
+# Source files
+SERVER_SRC = src/server.c src/users.c
+CLIENT_SRC = src/client.c
 
-# Object files generated from source files, stored in the build directory
-# Target executable: build/myapp
-OBJ = $(SRC:src/%.c=build/%.o)
-TARGET = build/myapp
+# Object files
+SERVER_OBJ = $(SERVER_SRC:src/%.c=build/%.o)
+CLIENT_OBJ = $(CLIENT_SRC:src/%.c=build/%.o)
 
-$(TARGET): $(OBJ)
-	$(CC) $(OBJ) -o $@
+# Targets
+SERVER = build/server
+CLIENT = build/client
+
+# Default target
+all: $(SERVER) $(CLIENT)
+
+$(SERVER): $(SERVER_OBJ) | build
+	$(CC) $(SERVER_OBJ) -o $@
+
+$(CLIENT): $(CLIENT_OBJ) | build
+	$(CC) $(CLIENT_OBJ) -o $@
 
 build/%.o: src/%.c | build
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -21,3 +32,5 @@ build:
 
 clean:
 	rm -rf build
+
+.PHONY: all clean
