@@ -21,7 +21,7 @@ int main(void) {
     int sockfd = -1;  // socket file descriptor
     int numbytes;
     
-    char *server = "127.0.0.1";  // localhost
+    char *server = MYIP;
     
     memset(&hints, 0, sizeof hints);  // fill hints with 0's
     hints.ai_family = AF_UNSPEC;
