@@ -1,4 +1,4 @@
-# Chat Application
+# Chat Application (v1)
 
 A TCP-based chat server with separate client and user management tools.
 Supports interactive messaging, user creation, and login/logout functionality.
@@ -106,4 +106,75 @@ Client                          Server
   |  send response back           |
   |<------ "login confirmed" -----|
   |                               |
+```
+
+# Chat Application (v2)
+
+Version 2 is implemented in branch `v2`. This version uses threads to handle multiple clients concurrently. (Maximum 3 clients)
+
+Commands supported:
+
+```bash
+- NEWUSER <username> <password>
+- LOGIN <username> <password>
+- LOGOUT
+- SEND <username> # Send a message to the specified user (server unicasts the message)
+- SENDALL # Send a message to all connected users (server broadcasts the message)
+- WHO # List all connected users
+```
+
+## Usage Example (v2)
+
+This example demonstrates 2 clients connecting to the server and using the application concurrently.
+
+User 1: Tom Tom11
+User2: David David22
+
+**Client 1 Output:**
+```bash
+My chat room client. Version Two.
+send
+Denied. Please login first.
+login Tom Tom11
+login confirmed
+who
+Beth, David, Tom
+Beth: when is project 2 due?
+David: I do not know
+send all November 3
+David: really?
+David left.
+```
+
+**Client 2 Output:**
+```bash
+My chat room client. Version Two.
+login David David22
+login confirmed
+who
+Beth, David
+send Beth are you there?
+Beth: yes
+Tom joins.
+Beth: when is project 2 due?
+send all I do not know.
+Tom: November 3.
+send all: really?
+logout
+```
+
+**Server Output:**
+```bash
+My chat room server. Version Two.
+
+Beth login.
+David login.
+David (to Beth): are you there?
+Beth (to David): yes
+Tom login.
+Beth: when is project 2 due?
+David: I do not know
+Tom: November 3
+David: really?
+David logout.
 ```
