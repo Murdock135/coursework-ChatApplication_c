@@ -6,14 +6,46 @@
 // Global user database
 struct User users[MAXUSERS];
 
-// Initialize users array
+// Save all users to file
+static void save_users(void) {
+    FILE *f = fopen(USERS_FILE, "w");
+    if (f == NULL) {
+        fprintf(stderr, "Warning: could not save users to %s\n", USERS_FILE);
+        return;
+    }
+    for (int i = 0; i < MAXUSERS; i++) {
+        if (users[i].in_use) {
+            fprintf(f, "(%s, %s)\n", users[i].name, users[i].password);
+        }
+    }
+    fclose(f);
+}
+
+// Initialize users array and load from file
 void init_users(void) {
+
+    // Start with no users
     for (int i = 0; i < MAXUSERS; i++) {
         users[i].in_use = 0;
         users[i].logged_in = 0;
         memset(users[i].name, 0, NAMELENGTH);
         memset(users[i].password, 0, NAMELENGTH);
     }
+
+    // Load users from file
+    FILE *f = fopen(USERS_FILE, "r");
+    if (f == NULL) return;  // No file yet, start fresh
+
+    int slot = 0;
+    char name[NAMELENGTH], password[NAMELENGTH];
+    while (slot < MAXUSERS && fscanf(f, " (%31[^,], %31[^)])\n", name, password) == 2) {
+        strncpy(users[slot].name, name, NAMELENGTH - 1);
+        strncpy(users[slot].password, password, NAMELENGTH - 1);
+        users[slot].in_use = 1;
+        users[slot].logged_in = 0;
+        slot++;
+    }
+    fclose(f);
 }
 
 // Find a user by name, return index or -1 if not found
@@ -41,6 +73,7 @@ int create_user(const char *name, const char *password) {
             strncpy(users[i].password, password, NAMELENGTH - 1);
             users[i].in_use = 1;
             users[i].logged_in = 0;
+            save_users();
             return 1;  // Success
         }
     }

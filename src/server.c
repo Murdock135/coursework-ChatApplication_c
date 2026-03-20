@@ -21,8 +21,7 @@ Description:
 #include "chat_config.h" 
 #include "server/user.h"
 
-// Forward declarations
-void init_users(void);
+// Forward declaration
 void handle_command(const char *buf, char *response, char *logged_in_user);
 
 // Handle client commands and send responses

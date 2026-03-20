@@ -12,6 +12,7 @@ struct User {
 
 extern struct User users[MAXUSERS];
 
+void init_users(void);
 int create_user(const char *name, const char *password);
 int login_user(const char *name, const char *password);
 int logout_user(const char *name);
