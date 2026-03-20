@@ -130,14 +130,11 @@ int main(void) {
     int status; // return of getaddrinfo()
     int sockfd; // return of socket()
     int new_sockfd; // return of accept()
-    char * address = NULL; // their address
-
     memset(&hints, 0, sizeof hints); // fill hints with 0's
     hints.ai_family = AF_UNSPEC;
-    hints.ai_flags = AI_PASSIVE; // fill in my IP for me
     hints.ai_socktype = SOCK_STREAM; // TCP stream socket
 
-    if ((status = getaddrinfo(address, MYPORT, &hints, &res)) != 0) {
+    if ((status = getaddrinfo(MYIP, MYPORT, &hints, &res)) != 0) {
         fprintf(stderr, "gai_error: %s\n", gai_strerror(status));
         exit(1);
     }

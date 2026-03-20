@@ -1,4 +1,5 @@
 #define MYPORT "19543"
+#define MYIP "127.0.0.1"
 #define BACKLOG 10
 #define NAMELENGTH 32
 #define BUFFERSIZE 256
