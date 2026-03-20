@@ -59,8 +59,14 @@ int find_user(const char *name) {
 }
 
 // Create a new user account
-// Returns: 1 if success, 0 if user already exists, -1 if no space
+// Returns: 1 if success, 0 if user already exists, -1 if no space, -2 if invalid lengths
 int create_user(const char *name, const char *password) {
+    // Validate lengths
+    int name_len = strlen(name);
+    int pass_len = strlen(password);
+    if (name_len < USERNAME_MIN || name_len > USERNAME_MAX) return -2;
+    if (pass_len < PASSWORD_MIN || pass_len > PASSWORD_MAX) return -2;
+
     // Check if user already exists
     if (find_user(name) != -1) {
         return 0;  // User already exists

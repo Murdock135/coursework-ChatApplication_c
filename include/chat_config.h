@@ -3,4 +3,8 @@
 #define NAMELENGTH 32
 #define BUFFERSIZE 256
 #define MAXUSERS 5
+#define USERNAME_MIN 3
+#define USERNAME_MAX 32
+#define PASSWORD_MIN 4
+#define PASSWORD_MAX 8
 #define USERS_FILE "data/users.txt"

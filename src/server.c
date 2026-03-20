@@ -46,8 +46,10 @@ void handle_command(const char *buf, char *response, char *logged_in_user) {
             printf("New user account created\n");
         } else if (result == 0) {
             snprintf(response, BUFFERSIZE, "Denied. User account already exists.\n");
-        } else {
+        } else if (result == -1) {
             snprintf(response, BUFFERSIZE, "Denied. No space for new users.\n");
+        } else {
+            snprintf(response, BUFFERSIZE, "Denied. Username must be 3-32 chars and password 4-8 chars.\n");
         }
         return;
     }
