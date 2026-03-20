@@ -8,8 +8,11 @@ Supports interactive messaging, user creation, and login/logout functionality.
 ```
 coursework-ChatApplication/
 ├── Makefile
+├── make.sh
 ├── README.md
 ├── AGENTS.md
+├── data/
+│   └── users.txt
 ├── include/
 │   ├── chat_config.h
 │   └── server/
@@ -17,15 +20,46 @@ coursework-ChatApplication/
 ├── src/
 │   ├── server.c
 │   ├── users.c
-│   ├── client.c
-│   └── newuser.c
+│   └── client.c
 ├── build/
 │   ├── server
-│   ├── client
-│   └── newuser
+│   └── client
 └── tests/
     └── showip.c
 ```
+
+## Demo on Another Machine
+
+**Packaging (run from project root):**
+```bash
+zip server.zip src/server.c src/users.c include/server/user.h include/chat_config.h data/users.txt Makefile make.sh
+zip client.zip src/client.c include/chat_config.h
+```
+
+**On the target machine:**
+
+1. Unzip both archives into the same directory:
+   ```bash
+   unzip server.zip
+   unzip client.zip
+   ```
+
+2. Build using the Makefile:
+   ```bash
+   make
+   ```
+
+3. Run the server from that directory (so `data/users.txt` resolves correctly):
+   ```bash
+   ./build/server
+   ```
+
+4. Run the client in a separate terminal:
+   ```bash
+   ./build/client
+   ```
+
+> **Note:** The server must be run from the directory containing `data/`.
 
 ## Usage Example
 
